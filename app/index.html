@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      const socket = new WebSocket("ws://localhost:8080");
+
+      socket.addEventListener("message", (event) => {
+        console.log("Message from server ", event.data);
+        if (event.data == "err") {
+          document.getElementById("number").innerHTML = "Error";
+        } else {
+          document.getElementById("number").innerHTML =
+            event.data + '<p class="unit-label">kg/m3</p>';
+        }
+      });
+
+      let interval = null;
+
+      socket.onopen = () => {
+        console.log("Connected to server");
+        socket.send("Started");
+        interval = setInterval(() => {
+          socket.send("read");
+        }, 500);
+      };
+
+      socket.onclose = () => {
+        console.log("Disconnected from server");
+        clearInterval(interval);
+      };
+    </script>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: darkslategrey;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        width: 100%;
+        padding: 0;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+      #number {
+        color: white;
+        font-size: 30vh;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        margin-top: 0;
+        flex: 1;
+      }
+      .button-group {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: flex-end;
+        flex-direction: column;
+      }
+      .button {
+        padding: 0.7rem;
+        font-size: 1.5rem;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button:first-child {
+        background-color: coral;
+      }
+      button:last-child {
+        background-color: darkseagreen;
+      }
+      .unit-label {
+        color: white;
+        margin-top: 0;
+        margin-bottom: 0px;
+        font-size: 20px;
+      }
+    </style>
+    <div>
+      <p id="number"></p>
+    </div>
+
+    <div class="button-group">
+      <button class="button">Tara</button>
+      <button class="button">Guardar</button>
+    </div>
+  </body>
+</html>
