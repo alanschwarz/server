@@ -1,0 +1,41 @@
+from flask import Flask, render_template
+from flask_socketio import SocketIO
+import RPi.GPIO as GPIO
+from hx711 import HX711
+
+GPIO.setmode(GPIO.BCM)
+hx = HX711(dout_pin=6, pd_sck_pin=5)
+hx.zero()
+ratio=734.79
+tare=236.5
+volume=8.744
+hx.set_scale_ratio(ratio)
+
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'preexAMD'  # Replace with your own secret key
+
+socketio = SocketIO(app)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+
+@socketio.on('message')
+def handle_message(data):
+    print('Received message:', data)
+    weight= hx.get_weight_mean()
+    if weight>-1 and weight<1 :
+        density=weight
+    else:
+        density=(weight-tare)/volume
+    print('density is: ')
+    print(density)
+    socketio.emit('message', str(density))
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True, host='0.0.0.0')
