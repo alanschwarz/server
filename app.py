@@ -6,7 +6,7 @@ from hx711 import HX711
 
 import paho.mqtt.client as paho
 
-client = paho.Client(protocol=paho.MQTTv311)
+client = paho.Client()
 # client.tls_set(tls_version=paho.mqtt.client.ssl.PROTOCOL_TLS)
 # client.username_pw_set("username", "password")
 client.connect("192.168.50.18", 8883)
