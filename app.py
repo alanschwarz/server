@@ -7,8 +7,8 @@ from hx711 import HX711
 import paho.mqtt.client as paho
 
 client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
-client.tls_set(tls_version=paho.mqtt.client.ssl.PROTOCOL_TLS)
-client.username_pw_set("username", "password")
+# client.tls_set(tls_version=paho.mqtt.client.ssl.PROTOCOL_TLS)
+# client.username_pw_set("username", "password")
 client.connect("ssl://192.168.50.18", 8883)
 
 GPIO.setmode(GPIO.BCM)
