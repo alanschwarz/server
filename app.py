@@ -16,7 +16,7 @@ hx = HX711(dout_pin=6, pd_sck_pin=5)
 hx.zero()
 ratio=734.79
 tare=236.5
-volume=8.744
+volume=1.835
 hx.set_scale_ratio(ratio)
 
 app = Flask(__name__)
