@@ -35,7 +35,7 @@ def handle_connect():
 @socketio.on('message')
 def handle_message(data):
     print('Received message:', data)
-    weight= hx.get_weight_mean()
+    weight= hx.get_weight_mean(9)
     if weight>-1 and weight<1 :
         density=weight
     else:
@@ -48,6 +48,7 @@ def handle_message(data):
 @socketio.on('tare')
 def handle_tare(data):
     print('Received tare command')
+    hx.zero(readings=30)
     # weight= hx.tare()
 
 @socketio.on('save')
