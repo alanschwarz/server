@@ -45,7 +45,7 @@ def handle_message(data):
     print('Received message:', data)
     weight= hx.get_weight_mean(9)
     if weight>-1 and weight<1 :
-        density=weight*100
+        density=weight
     else:
         density=(weight-tare)/volume
     print('density is: ')
