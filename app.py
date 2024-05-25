@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
-
+from time import sleep
 import RPi.GPIO as GPIO
 from hx711 import HX711
 
