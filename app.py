@@ -12,9 +12,14 @@ client = paho.Client()
 client.connect("192.168.50.18", 1883)
 
 GPIO.setmode(GPIO.BCM)
+pin_callbacks = {
+    18: handle_tare,
+    24: handle_save,
+}
+for pin, callback in pin_callbacks.items():
+    GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback, bouncetime=300)
 
-BUTTON_TARE_GPIO = 18
-GPIO.setup(BUTTON_TARE_GPIO, GPIO.IN, GPIO.PUD_UP)
 
 hx = HX711(dout_pin=6, pd_sck_pin=5)
 hx.zero()
@@ -60,7 +65,7 @@ def handle_tare(data):
     # weight= hx.tare()
 
 @socketio.on('save')
-def handle_tare(data):
+def handle_save(data):
     print('Received save command')
     weight= hx.get_weight_mean()
     if weight>-1 and weight<1 :
@@ -78,7 +83,7 @@ if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', allow_unsafe_werkzeug=True)
 
 
-GPIO.add_event_detect(BUTTON_TARE_GPIO, GPIO.FALLING, callback=button_tare_pressed_callback, bouncetime=300)
+
 
 while True:
     pass
