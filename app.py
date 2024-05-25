@@ -77,7 +77,7 @@ GPIO.add_event_detect(BUTTON_TARE_GPIO, GPIO.FALLING, callback=button_tare_press
 
 try:
     # Wait indefinitely for the button press
-    GPIO.wait_for_edge(BUTTON_GPIO, GPIO.FALLING)
+    GPIO.wait_for_edge(BUTTON_TARE_GPIO, GPIO.FALLING)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', allow_unsafe_werkzeug=True)
