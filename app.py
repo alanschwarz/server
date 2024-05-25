@@ -52,7 +52,7 @@ def handle_tare(data):
     # weight= hx.tare()
 
 @socketio.on('save')
-def handle_tare(data):
+def handle_save(data):
     print('Received save command')
     weight= hx.get_weight_mean()
     if weight>-1 and weight<1 :
