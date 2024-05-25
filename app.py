@@ -14,10 +14,10 @@ client.connect("192.168.50.18", 1883)
 GPIO.setmode(GPIO.BCM)
 pin_callbacks = {
     18: handle_tare,
-    24: handle_save,
+    24: handle_save
 }
 for pin, callback in pin_callbacks.items():
-    GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP)
     GPIO.add_event_detect(pin, GPIO.FALLING, callback=callback, bouncetime=300)
 
 
