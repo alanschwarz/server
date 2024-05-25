@@ -14,7 +14,7 @@ client.connect("192.168.50.18", 1883)
 GPIO.setmode(GPIO.BCM)
 
 BUTTON_TARE_GPIO = 18
-GPIO.setup(BUTTON_TARE_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(BUTTON_TARE_GPIO, GPIO.IN, GPIO.PUD_UP)
 
 hx = HX711(dout_pin=6, pd_sck_pin=5)
 hx.zero()
@@ -73,7 +73,7 @@ def handle_tare(data):
     # weight= 0
     client.publish("dens_amd/value", payload=density, qos=1)
 
-GPIO.add_event_detect(BUTTON_TARE_GPIO, GPIO.RISING, callback=button_tare_pressed_callback, bouncetime=300)
+GPIO.add_event_detect(BUTTON_TARE_GPIO, GPIO.FALLING, callback=button_tare_pressed_callback, bouncetime=300)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', allow_unsafe_werkzeug=True)
