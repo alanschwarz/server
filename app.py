@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
-from time import sleep
+
 import RPi.GPIO as GPIO
 from hx711 import HX711
 
@@ -74,6 +74,10 @@ def handle_tare(data):
     client.publish("dens_amd/value", payload=density, qos=1)
 
 GPIO.add_event_detect(BUTTON_TARE_GPIO, GPIO.FALLING, callback=button_tare_pressed_callback, bouncetime=300)
+
+try:
+    # Wait indefinitely for the button press
+    GPIO.wait_for_edge(BUTTON_GPIO, GPIO.FALLING)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', allow_unsafe_werkzeug=True)
