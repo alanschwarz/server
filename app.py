@@ -11,7 +11,13 @@ client = paho.Client()
 # client.username_pw_set("username", "password")
 client.connect("192.168.50.18", 1883)
 
+key1=18
+key3=24
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(key1, GPIO.IN, GPIO.PUD_UP)
+GPIO.setup(key3, GPIO.IN, GPIO.PUD_UP)
+
+
 hx = HX711(dout_pin=6, pd_sck_pin=5)
 hx.zero()
 ratio=734.79
@@ -27,6 +33,10 @@ socketio = SocketIO(app)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+def button_tare_pressed_callback(channel):
+    print("Tare pressed!")
+    handle_tare()
 
 @socketio.on('connect')
 def handle_connect():
@@ -64,7 +74,9 @@ def handle_save(data):
     # save value to MQTT topic
     # weight= 0
     client.publish("dens_amd/value", payload=density, qos=1)
-
+    
+GPIO.add_event_detect(key1, GPIO.FALLING, callback=handle_tare, bouncetime=300)
+GPIO.add_event_detect(key3, GPIO.FALLING, callback=handle_save, bouncetime=300)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', allow_unsafe_werkzeug=True)
