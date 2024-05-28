@@ -30,23 +30,6 @@ app.config['SECRET_KEY'] = 'preexAMD'  # Replace with your own secret key
 
 socketio = SocketIO(app)
 
-def gpio_handle_tare():
-    print('Received tare command GPIO')
-    hx.zero(readings=30)
-    
-
-def gpio_handle_save():
-    print('Received save command GPIO')
-    weight= hx.get_weight_mean()
-    if weight>-1 and weight<1 :
-        density=weight
-    else:
-        density=(weight-tare)/volume
-    print('density is: ')
-    print(density)
-    # save value to MQTT topic
-    client.publish("dens_amd/value", payload=density, qos=1)
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -57,8 +40,6 @@ def button_tare_pressed_callback(channel):
 
 @socketio.on('connect')
 def handle_connect():
-    GPIO.add_event_detect(key1, GPIO.FALLING, callback=gpio_handle_tare, bouncetime=300)
-    GPIO.add_event_detect(key3, GPIO.FALLING, callback=gpio_handle_save, bouncetime=300)
     print('Client connected')
 
 @socketio.on('message')
@@ -93,7 +74,9 @@ def handle_save(data):
     # save value to MQTT topic
     # weight= 0
     client.publish("dens_amd/value", payload=density, qos=1)
-
+    
+GPIO.add_event_detect(key1, GPIO.FALLING, callback=handle_tare, bouncetime=300)
+GPIO.add_event_detect(key3, GPIO.FALLING, callback=handle_save, bouncetime=300)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', allow_unsafe_werkzeug=True)
