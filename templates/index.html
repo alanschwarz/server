@@ -62,48 +62,60 @@
         text-align: center;
         margin-bottom: 1.5rem;
         margin-top: 0;
-        margin-left: 20px;
+        margin-right: 20px;
         flex: 2;
       }
       .button-group {
         display: flex;
-        flex: 1;
-        justify-content: space-around;
-        align-items: flex-end;
         flex-direction: column;
-        margin-right: 20px;
-        height: 100%;
+        justify-content: space-between;
+        height: 100vh;
       }
       .button {
-        padding: 0.7rem;
-        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 31vh;
+        font-size: 1.8rem;
         color: white;
-        border: none;
-        border-radius: 8px;
         cursor: pointer;
         text-decoration: none;
+        padding: 0 20px;
       }
       #tareButton {
         background-color: coral;
+        border-radius: 0 0 12px 0;
       }
       #saveButton {
         background-color: darkseagreen;
+        border-radius: 0 12px 0 0;
       }
       .unit-label {
         color: white;
         margin-top: 0;
         margin-bottom: 0px;
-        font-size: 80px;
+        font-size: 50px;
         margin-left: 20px;
       }
+      .buttonWrapper {
+        height: 31vh;
+      }
     </style>
-    <div>
-      <p id="number"></p>
-    </div>
 
     <div class="button-group">
-      <a class="button" id="tareButton" href="javascript:sendTare()">Tara</a>
-      <a class="button" id="saveButton" href="javascript:sendSave()">Guardar</a>
+      <div class="buttonWrapper">
+        <a class="button" id="tareButton" href="javascript:sendTare()">Tara</a>
+      </div>
+      <div class="buttonWrapper"></div>
+      <div class="buttonWrapper">
+        <a class="button" id="saveButton" href="javascript:sendSave()"
+          >Guardar</a
+        >
+      </div>
+    </div>
+
+    <div>
+      <p id="number"></p>
     </div>
   </body>
 </html>
