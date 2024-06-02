@@ -25,8 +25,8 @@ tare=236.5
 volume=1.835
 hx.set_scale_ratio(ratio)
 
-densidad=False
-estable=False
+densidad=0
+estable=0
 promedio=0
 lista=[0,0,0]
 
@@ -57,21 +57,21 @@ def handle_message(data):
     global estable
     if weight>-0.2 and weight<tare-0.2 :
         density=weight
-        densidad=False
+        densidad=0
     elif weight>=tare-0.2 and weight <tare +100*volume:
         density=(weight-tare)/volume
-        densidad=True
+        densidad=1
     else:
         density=-100.0
-        densidad=False
+        densidad=0
     lista[2]=lista[1]
     lista[1]=lista[0]
     lista[0]=density
     promedio=(lista[1]+lista[0]+lista[2])/3
-    if densidad and abs(lista[0]-promedio)<0.2 and abs(lista[1]-promedio)<0.2 and abs(lista[2]-promedio)<0.2 :
-        estable=True
+    if densidad==1 and abs(lista[0]-promedio)<0.2 and abs(lista[1]-promedio)<0.2 and abs(lista[2]-promedio)<0.2 :
+        estable=1
     else:
-        estable=False
+        estable=0
     print('density is: ')
     print(density)
     socketio.emit('message', {'valor':str(density), 'unidad':densidad,'estable':estable})
