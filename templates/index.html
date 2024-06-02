@@ -25,7 +25,7 @@
       });
 
       socket.on("message", function (data) {
-        console.log("Server says: " + data);
+        console.log("Server says: " + data.densidad);
         if (data.valor == "err") {
           document.getElementById("number").innerHTML = "Error";
         } else {
@@ -36,7 +36,7 @@
           document.getElementById("number").innerHTML =
             Number(data.valor).toFixed(2) ;
           document.getElementById("unit-label").innerHTML =
-            unidad ;
+            data.densidad ;
         }
       });
 
