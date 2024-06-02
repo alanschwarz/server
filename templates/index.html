@@ -26,11 +26,17 @@
 
       socket.on("message", function (data) {
         console.log("Server says: " + data);
-        if (data == "err") {
+        if (data.valor == "err") {
           document.getElementById("number").innerHTML = "Error";
         } else {
+          let unidad='peso en gramos'
+          if (data.densidad){
+            unidad = 'densidad en gramos/litro'
+          }
           document.getElementById("number").innerHTML =
-            Number(data).toFixed(2) + '<p class="unit-label">kg/m3</p>';
+            Number(data.valor).toFixed(2) ;
+          document.getElementById("unit-label").innerHTML =
+            unidad ;
         }
       });
 
@@ -90,7 +96,7 @@
         background-color: darkseagreen;
         border-radius: 0 12px 0 0;
       }
-      .unit-label {
+      #unit-label {
         color: white;
         margin-top: 0;
         margin-bottom: 0px;
@@ -116,6 +122,7 @@
 
     <div>
       <p id="number"></p>
+      <p id="unit-label"></p>
     </div>
   </body>
 </html>
