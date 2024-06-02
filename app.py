@@ -25,6 +25,11 @@ tare=236.5
 volume=1.835
 hx.set_scale_ratio(ratio)
 
+densidad=False
+estable=False
+promedio=0
+lista=[0,0,0]
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'preexAMD'  # Replace with your own secret key
 
@@ -46,10 +51,27 @@ def handle_connect():
 def handle_message(data):
     print('Received message:', data)
     weight= hx.get_weight_mean(9)
-    if weight>-1 and weight<1 :
+    global lista
+    global promedio
+    global densidad
+    global estable
+    if weight>-0.2 and weight<tare-0.2 :
         density=weight
-    else:
+        densidad=False
+    elif weight>=tare-0.2 and weight <tare +100*volume:
         density=(weight-tare)/volume
+        densidad=True
+    else:
+        density=-100.0
+        densidad=False
+    lista[2]=lista[1]
+    lista[1]=lista[0]
+    lista[0]=density
+    promedio=(lista[1]+lista[0]+lista[2])/3
+    if densidad and abs(lista[0]-promedio)<0.2 and abs(lista[1]-promedio)<0.2 and abs(lista[2]-promedio)<0.2 :
+        estable=True
+    else:
+        estable=False
     print('density is: ')
     print(density)
     socketio.emit('message', str(density))
