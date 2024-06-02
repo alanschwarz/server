@@ -25,18 +25,14 @@
       });
 
       socket.on("message", function (data) {
-        console.log("Server says: " + data.densidad);
+        console.log("Server says: " + data.unidad);
         if (data.valor == "err") {
           document.getElementById("number").innerHTML = "Error";
         } else {
-          let unidad='peso en gramos'
-          if (data.densidad){
-            unidad = 'densidad en gramos/litro'
-          }
           document.getElementById("number").innerHTML =
             Number(data.valor).toFixed(2) ;
           document.getElementById("unit-label").innerHTML =
-            data.densidad ;
+            data.unidad ;
         }
       });
 
