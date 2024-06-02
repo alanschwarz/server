@@ -25,7 +25,7 @@ tare=236.5
 volume=1.835
 hx.set_scale_ratio(ratio)
 
-densidad=0
+densidad='peso en gramos'
 estable=0
 promedio=0
 lista=[0,0,0]
@@ -57,13 +57,13 @@ def handle_message(data):
     global estable
     if weight>-0.2 and weight<tare-0.2 :
         density=weight
-        densidad=0
+        densidad='peso en gramos'
     elif weight>=tare-0.2 and weight <tare +100*volume:
         density=(weight-tare)/volume
-        densidad=1
+        densidad='densidad en gramos/litro'
     else:
         density=-100.0
-        densidad=0
+        densidad='fuera de rango - TARA'
     lista[2]=lista[1]
     lista[1]=lista[0]
     lista[0]=density
