@@ -74,7 +74,7 @@ def handle_message(data):
         estable=False
     print('density is: ')
     print(density)
-    socketio.emit('message', str(density))
+    socketio.emit('message', {'valor':str(density), 'unidad':densidad,'estable':estable})
     # socketio.emit('message', '0.56')
 
 @socketio.on('tare')
