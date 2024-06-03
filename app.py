@@ -25,6 +25,7 @@ tare=236.5
 volume=1.835
 hx.set_scale_ratio(ratio)
 
+density=0
 densidad='peso en gramos'
 estable=0
 promedio=0
@@ -39,9 +40,9 @@ socketio = SocketIO(app)
 def index():
     return render_template('index.html')
 
-def button_tare_pressed_callback(channel):
-    print("Tare pressed!")
-    handle_tare()
+#def button_tare_pressed_callback(channel):
+#    print("Tare pressed!")
+#    handle_tare()
 
 @socketio.on('connect')
 def handle_connect():
@@ -52,6 +53,7 @@ def handle_message(data):
     print('Received message:', data)
     weight= hx.get_weight_mean(9)
     global lista
+    global density
     global promedio
     global densidad
     global estable
@@ -68,7 +70,7 @@ def handle_message(data):
     lista[1]=lista[0]
     lista[0]=density
     promedio=(lista[1]+lista[0]+lista[2])/3
-    if densidad==1 and abs(lista[0]-promedio)<0.2 and abs(lista[1]-promedio)<0.2 and abs(lista[2]-promedio)<0.2 :
+    if densidad=='densidad en gramos/litro' and abs(lista[0]-promedio)<0.2 and abs(lista[1]-promedio)<0.2 and abs(lista[2]-promedio)<0.2 :
         estable=1
     else:
         estable=0
@@ -86,16 +88,15 @@ def handle_tare(data):
 @socketio.on('save')
 def handle_save(data):
     print('Received save command')
-    weight= hx.get_weight_mean()
-    if weight>-1 and weight<1 :
-        density=weight
+    if densidad=='densidad en gramos/litro' and estable== :
+        dato=promedio
     else:
-        density=(weight-tare)/volume
+        dato=0.0
     print('density is: ')
-    print(density)
+    print(dato)
     # save value to MQTT topic
     # weight= 0
-    client.publish("dens_amd/value", payload=density, qos=1)
+    client.publish("dens_amd/value", payload=dato, qos=1)
     
 GPIO.add_event_detect(key1, GPIO.FALLING, callback=handle_tare, bouncetime=300)
 GPIO.add_event_detect(key3, GPIO.FALLING, callback=handle_save, bouncetime=300)
