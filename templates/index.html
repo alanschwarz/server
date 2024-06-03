@@ -34,6 +34,13 @@
           document.getElementById("unit-label").innerHTML =
             data.unidad ;
         }
+        if (data.estable==1){
+                  document.getElementById("stable-label").innerHTML =
+            "medición estable" ;
+        } else {
+                  document.getElementById("stable-label").innerHTML =
+            " " ;
+        }
       });
 
       function sendTare() {
@@ -92,11 +99,18 @@
         background-color: darkseagreen;
         border-radius: 0 12px 0 0;
       }
+      #stable-label {
+        color: white;
+        margin-top: 0;
+        margin-bottom: 0px;
+        font-size: 40px;
+        margin-left: 20px;
+      }
       #unit-label {
         color: white;
         margin-top: 0;
         margin-bottom: 0px;
-        font-size: 50px;
+        font-size: 40px;
         margin-left: 20px;
       }
       .buttonWrapper {
@@ -117,6 +131,7 @@
     </div>
 
     <div>
+      <p id="stable-label"></p>
       <p id="number"></p>
       <p id="unit-label"></p>
     </div>
